@@ -9,8 +9,4 @@ release:
   command:
     - cd backend && npm run migrate:deploy && npm run prisma:seed
 run:
-  web: cd frontend && node server.js
-  worker:
-    image: web
-    command:
-      - cd backend && npm run start
+  web: cd frontend && node server.js cd ../backend && npm run start
