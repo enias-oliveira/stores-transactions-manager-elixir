@@ -1,23 +1,23 @@
+import { Typography } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 
 const Home: NextPage = () => {
-  return (
-    <div>
-      <Head>
-        <title>Stores Transactions Manager</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    return (
+        <div>
+            <Head>
+                <title>Stores Transactions Manager</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
 
-      <main >
-        <h1 >
-          Stores Transactions Manager
-        </h1>
-      </main>
+            <main >
+                <Typography variant='h1'>
+                    Stores Transactions Manager
+                </Typography>
+            </main>
 
-    </div>
-  )
+        </div>
+    )
 }
 
 export default Home
