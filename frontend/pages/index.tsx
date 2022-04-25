@@ -8,7 +8,7 @@ import { StoreRow } from '../components/StoreRow';
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
 const Home: NextPage = () => {
-    const { data } = useSWR('http://localhost:5500/stores', fetcher);
+    const { data } = useSWR('/api/stores', fetcher);
 
     if (!data) {
         return <div>...Loading</div>
