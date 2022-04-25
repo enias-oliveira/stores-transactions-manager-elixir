@@ -1,0 +1,12 @@
+setup:
+  addons:
+  - plan: heroku-postgresql:hobby-dev
+build:
+  docker:
+    web: Dockerfile
+release:
+  command:
+    - npm run migrate:deploy && npm run prisma:seed
+  image: web
+run:
+  web: npm run start
