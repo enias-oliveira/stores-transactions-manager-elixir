@@ -8,7 +8,7 @@ import { StoreRow } from '../components/StoreRow';
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
 const Home: NextPage = () => {
-    const { data } = useSWR('http://strs-transactions-manager-dev.herokuapp.com/stores', fetcher);
+    const { data } = useSWR('http://localhost:5500/stores', fetcher);
 
     if (!data) {
         return <div>...Loading</div>
@@ -37,7 +37,7 @@ const Home: NextPage = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {data.map((store: { name: string, owner: string, id: number }) => (<StoreRow store={store} />))}
+                                {data.map((store: { name: string, owner: string, id: number }) => (<StoreRow key={store.id} store={store} />))}
                             </TableBody>
                         </Table>
                     </TableContainer>

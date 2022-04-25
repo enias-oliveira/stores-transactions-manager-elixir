@@ -18,7 +18,7 @@ interface StoreRowPropTypes {
 
 const StoreRow = ({ store }: StoreRowPropTypes) => {
     const [open, setOpen] = useState(false);
-    const { data } = useSWR(() => open ? `http://strs-transactions-manager-dev.herokuapp.com/stores/${store.id}/transactions` : null, fetcher);
+    const { data } = useSWR(() => open ? `http://localhost:5500/stores/${store.id}/transactions` : null, fetcher);
 
     const transactionsColumns: GridColDef[] = [
         {

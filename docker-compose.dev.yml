@@ -36,7 +36,7 @@ services:
     depends_on:
       - postgres_db
     restart: always
-    command: bash -c "./wait-for-it.sh postgres_db:5432 -- npx prisma migrate dev && npm run start:dev"
+    command: bash -c "./wait-for-it.sh postgres_db:5432 -- npx prisma migrate dev && npm run prisma:seed && npm run start:dev"
     container_name: server
   #############
 networks:
