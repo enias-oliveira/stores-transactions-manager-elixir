@@ -7,11 +7,17 @@ import FileUpload from 'react-material-file-upload';
 import useSWR, { useSWRConfig } from 'swr';
 import { StoreRow } from '../components/StoreRow';
 
+export interface TransactionsType {
+    id: number
+    description: string
+    entryNature: string
+}
+
 const storesApi = '/api/stores';
 
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
-const Home: NextPage = () => {
+const Home: NextPage<{ transactionsTypes: TransactionsType[] }> = ({ transactionsTypes }) => {
     const { mutate } = useSWRConfig()
     const [successFeedbackOpen, setSuccessFeedbackOpen] = useState(false);
 
@@ -69,7 +75,9 @@ const Home: NextPage = () => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {data.map((store: { name: string, owner: string, id: number }) => (<StoreRow key={store.id} store={store} />))}
+                                    {data.map((store: { name: string, owner: string, id: number }) => (
+                                        <StoreRow key={store.id} store={store} transactionsTypes={transactionsTypes} />
+                                    ))}
                                 </TableBody>
                             </Table> : <CircularProgress />
                         }
@@ -80,5 +88,14 @@ const Home: NextPage = () => {
         </>
     )
 }
+
+export const getStaticProps = async () => {
+    const { data } = await axios.get<TransactionsType[]>('http://localhost:5500/transactions/types')
+    return {
+        props: {
+            transactionsTypes: data
+        }
+    }
+};
 
 export default Home
