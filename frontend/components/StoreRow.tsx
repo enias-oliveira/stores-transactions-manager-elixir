@@ -5,6 +5,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useState } from 'react';
 import useSWR from 'swr';
+import { TransactionsType } from '../pages';
 
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
@@ -14,21 +15,30 @@ interface StoreRowPropTypes {
         name: string
         owner: string
     }
+    transactionsTypes: TransactionsType[]
 }
 
-const StoreRow = ({ store }: StoreRowPropTypes) => {
+
+const StoreRow = ({ store, transactionsTypes }: StoreRowPropTypes) => {
     const [open, setOpen] = useState(false);
     const { data } = useSWR(() => open ? `api/stores/${store.id}/transactions` : null, fetcher);
+
+    const getTransactionTypeFieldById = (transactionTypeId: number, field: keyof TransactionsType) =>
+        transactionsTypes.find(tt => tt.id === transactionTypeId)![field]
 
     const transactionsColumns: GridColDef[] = [
         {
             field: "id",
-            headerName: "TransactionId",
-            flex: 1,
+            flex: 0.3,
         },
         {
             field: "date",
+            flex: 1.5,
+        },
+        {
+            field: "description",
             flex: 1,
+            valueGetter: val => getTransactionTypeFieldById(val.row.transactionTypeId, 'description')
         },
         {
             field: "value",
@@ -41,6 +51,11 @@ const StoreRow = ({ store }: StoreRowPropTypes) => {
         {
             field: "card",
             flex: 1,
+        },
+        {
+            field: "entryNature",
+            flex: 1,
+            valueGetter: val => getTransactionTypeFieldById(val.row.transactionTypeId, 'entryNature')
         },
     ];
 
