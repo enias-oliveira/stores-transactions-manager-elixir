@@ -14,6 +14,7 @@ interface StoreRowPropTypes {
         id: number
         name: string
         owner: string
+        totalBalance: number
     }
     transactionsTypes: TransactionsType[]
 }
@@ -73,9 +74,10 @@ const StoreRow = ({ store, transactionsTypes }: StoreRowPropTypes) => {
                 </TableCell>
                 <TableCell>{store.name}</TableCell>
                 <TableCell>{store.owner}</TableCell>
+                <TableCell>{store.totalBalance}</TableCell>
             </TableRow>
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         {data &&
                             <DataGrid
