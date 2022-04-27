@@ -16,13 +16,12 @@ jobs:
           heroku_app_name: "strs-transactions-manager-dev"
           heroku_email: "eniasoliveira27@gmail.com"
           stack: "container"
-
-steps:
-- uses: actions/checkout@master
-- uses: codecov/codecov-action@v2
-  with:
-    files: ./coverage1.xml,./coverage2.xml # optional
-    flags: unittests # optional
-    name: codecov-umbrella # optional
-    fail_ci_if_error: true # optional (default = false)
-    verbose: true # optional (default = false)
+      - uses: actions/checkout@master
+      - uses: codecov/codecov-action@v2
+        with:
+          files: ./coverage1.xml,./coverage2.xml # optional
+          flags: unittests # optional
+          directory: backend/coverage/
+          name: Generate Coverage Report # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
