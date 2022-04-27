@@ -1,3 +1,5 @@
+import { HttpStatus } from '@nestjs/common';
+import { HttpException } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Promise as BBPromise } from 'bluebird';
@@ -22,8 +24,13 @@ export class StoresService {
     }));
   }
 
-  async store(params?: Prisma.StoreWhereUniqueInput) {
+  async store(params: Prisma.StoreWhereUniqueInput) {
     const store = await this.prisma.store.findUnique({ where: params });
+
+    if (!store) {
+      throw new HttpException('Store not Found', HttpStatus.NOT_FOUND)
+    }
+
     const totalBalance = await this.storeTransactionsSum(store.id);
 
     return { ...store, totalBalance };
