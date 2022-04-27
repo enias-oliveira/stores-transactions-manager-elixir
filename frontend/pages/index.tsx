@@ -36,6 +36,7 @@ const Home: NextPage = () => {
 
         setSuccessFeedbackOpen(true)
         mutate(storesApi)
+        window.location.reload()
     };
 
     return (
@@ -56,7 +57,9 @@ const Home: NextPage = () => {
 
                         <Snackbar open={successFeedbackOpen}
                             autoHideDuration={6000}
-                            onClose={() => setSuccessFeedbackOpen(false)}
+                            onClose={() => {
+                                setSuccessFeedbackOpen(false)
+                            }}
                             anchorOrigin={{ vertical: 'top', horizontal: 'right' }} >
                             <Alert onClose={() => setSuccessFeedbackOpen(false)} severity="success">File Successfully Uploaded!</Alert>
                         </Snackbar>
