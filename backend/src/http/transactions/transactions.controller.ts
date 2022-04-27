@@ -33,7 +33,7 @@ export class TransactionsController {
   @UseInterceptors(ClassSerializerInterceptor)
   async uploadTransactionsFile(
     @UploadedFile() file: Express.Multer.File,
-  ): Promise<any> {
+  ): Promise<Transaction[]> {
     return this.transactionsService.processCNABFile(file);
   }
 }

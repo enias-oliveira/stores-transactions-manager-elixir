@@ -77,7 +77,12 @@
     "testEnvironment": "node",
     "coverageDirectory": "../coverage",
     "collectCoverage": true,
-    "coveragePathIgnorePatterns": [".module.ts", "main.ts", "database/"]
+    "coveragePathIgnorePatterns": [
+      ".module.ts",
+      "main.ts",
+      "database/",
+      ".interceptor.ts"
+    ]
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

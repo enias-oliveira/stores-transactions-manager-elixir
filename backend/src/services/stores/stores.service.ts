@@ -41,6 +41,6 @@ export class StoresService {
       where: { storeId: id },
       _sum: { value: true },
     });
-    return aggregate._sum.value;
+    return aggregate?._sum.value ?? 0;
   }
 }
