@@ -4,6 +4,14 @@ const nextConfig = {
   experimental: {
     outputStandalone: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://localhost:5500/:path*' // Proxy to Backend
+      }
+    ]
+  }
 }
 
 module.exports = nextConfig
