@@ -72,10 +72,11 @@ const Home: NextPage = () => {
                                         <TableCell></TableCell>
                                         <TableCell>Store</TableCell>
                                         <TableCell>Owner</TableCell>
+                                        <TableCell>Total Balance</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {store.map((store: { name: string, owner: string, id: number }) => (
+                                    {store.map((store: { name: string, owner: string, id: number, totalBalance: number }) => (
                                         <StoreRow key={store.id} store={store} transactionsTypes={transactionsTypes} />
                                     ))}
                                 </TableBody>
