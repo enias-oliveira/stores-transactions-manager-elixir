@@ -17,12 +17,12 @@ const storesApi = '/api/stores';
 
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
-const Home: NextPage<{ transactionsTypes: TransactionsType[] }> = ({ transactionsTypes }) => {
+const Home: NextPage = () => {
     const { mutate } = useSWRConfig()
     const [successFeedbackOpen, setSuccessFeedbackOpen] = useState(false);
 
-
-    const { data } = useSWR(storesApi, fetcher);
+    const { data: store } = useSWR(storesApi, fetcher);
+    const { data: transactionsTypes } = useSWR('api/transactions/types', fetcher);
 
     const handleFileUpload = async (files: File[]) => {
         const [file] = files;
@@ -65,7 +65,7 @@ const Home: NextPage<{ transactionsTypes: TransactionsType[] }> = ({ transaction
 
                 <main >
                     <TableContainer component={Paper}>
-                        {data ?
+                        {store ?
                             <Table aria-label="collapsible table">
                                 <TableHead>
                                     <TableRow>
@@ -75,7 +75,7 @@ const Home: NextPage<{ transactionsTypes: TransactionsType[] }> = ({ transaction
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {data.map((store: { name: string, owner: string, id: number }) => (
+                                    {store.map((store: { name: string, owner: string, id: number }) => (
                                         <StoreRow key={store.id} store={store} transactionsTypes={transactionsTypes} />
                                     ))}
                                 </TableBody>
@@ -88,14 +88,5 @@ const Home: NextPage<{ transactionsTypes: TransactionsType[] }> = ({ transaction
         </>
     )
 }
-
-export const getStaticProps = async () => {
-    const { data } = await axios.get<TransactionsType[]>('http://localhost:5500/transactions/types')
-    return {
-        props: {
-            transactionsTypes: data
-        }
-    }
-};
 
 export default Home
