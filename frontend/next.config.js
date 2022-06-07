@@ -7,8 +7,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        destination: `${process.env.BACKEND_SERVICE_URL || 'http://localhost:5500' }/:path*` // Proxy to Backend
+        source: '/:path*',
+        destination: `${process.env.BACKEND_SERVICE_URL}/:path*` // Proxy to Backend
       }
     ]
   }
