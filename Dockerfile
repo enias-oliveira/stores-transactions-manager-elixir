@@ -1,6 +1,7 @@
 ARG ELIXIR_VERSION=1.13.4
 ARG OTP_VERSION=24.2
 ARG DEBIAN_VERSION=bullseye-20210902-slim
+ARG BACKEND_SERVICE_URL
 
 ARG BUILDER_IMAGE="elixir:1.12.3"
 ARG RUNNER_IMAGE="debian"
@@ -84,6 +85,8 @@ FROM node:16-alpine AS frontend-builder
 WORKDIR /frontend-app
 COPY --from=frontend-deps /frontend-app/node_modules ./node_modules
 
+ENV BACKEND_SERVICE_URL=$BACKEND_SERVICE_URL
+
 COPY frontend/ .
 RUN npm run build
 
@@ -105,6 +108,10 @@ EXPOSE 3000
 
 
 FROM debian AS runner
+RUN apt-get update
+RUN apt-get -y install curl gnupg
+RUN curl -sL https://deb.nodesource.com/setup_16.x  | bash -
+RUN apt-get -y install nodejs
 WORKDIR /app
 COPY --from=frontend-runner /frontend-app/. ./frontend
 COPY --from=backend /backend-app/. ./backend

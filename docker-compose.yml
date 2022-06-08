@@ -10,10 +10,10 @@ services:
     ports:
       - 5434:5432
     volumes:
-      - ./backend/database/data/prod:/var/lib/postgresql/data
+      - ./database/data/prod:/var/lib/postgresql/data
     container_name: db
     env_file:
-     - ./backend/docker.env
+     - ./backend/.env.docker
 
   server:
     build:
@@ -25,7 +25,7 @@ services:
     ports:
       - 4000:4000
     env_file:
-        - ./backend/docker.env
+        - ./backend/.env.docker
     depends_on:
       - db
     restart: always
