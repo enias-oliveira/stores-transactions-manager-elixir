@@ -6,7 +6,5 @@ build:
     web: Dockerfile.heroku
 release:
   image: web
-  command:
-    - cd backend && npm run migrate:deploy && npm run prisma:seed
 run:
-  web: bash -c "cd backend; npm run start & cd ../frontend; node server.js"
+  web: bash -c "cd backend; /bin/server & cd ../frontend; node server.js"
