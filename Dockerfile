@@ -74,20 +74,20 @@ USER nobody
 CMD ["/app/bin/server"]
 
 
-FROM node:16 AS frontend-deps
+FROM node:16-alpine AS frontend-deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /frontend-app
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 
-FROM node:16 AS frontend-builder
+FROM node:16-alpine AS frontend-builder
 WORKDIR /frontend-app
 COPY --from=frontend-deps /frontend-app/node_modules ./node_modules
 
 COPY frontend/ .
 RUN npm run build
 
-FROM node:16 AS frontend-runner
+FROM node:16-alpine AS frontend-runner
 WORKDIR /frontend-app
 ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
