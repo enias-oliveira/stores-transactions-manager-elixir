@@ -9,6 +9,10 @@ defmodule BackendWeb.Router do
     pipe_through(:api)
 
     resources("/stores", StoreController, except: [:new, :edit])
+
+    scope "/transactions" do
+      resources "/types", TransactionTypesController, except: [:new, :edit]
+    end
   end
 
   # Enables LiveDashboard only for development
