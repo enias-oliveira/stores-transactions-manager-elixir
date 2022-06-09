@@ -7,11 +7,7 @@ defmodule BackendWeb.StoreController do
   action_fallback(BackendWeb.FallbackController)
 
   def index(conn, _params) do
-    stores = [
-      %{id: 1, name: "BAR DO JOÃO", owner: "JOÃO MACEDO", totalBalance: 12.18}
-    ]
-
-    # stores = Stores.list_stores()
+    stores = Stores.list_stores()
 
     render(conn, "index.json", stores: stores)
   end
