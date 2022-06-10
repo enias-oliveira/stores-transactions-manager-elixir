@@ -52,4 +52,8 @@ initial_transaction_types = [
   }
 ]
 
-Enum.each(initial_transaction_types, &Repo.insert/1)
+all_current_transactions_types = Repo.all(TransactionTypes)
+
+if all_current_transactions_types == [] do
+  Enum.each(initial_transaction_types, &Repo.insert/1)
+end

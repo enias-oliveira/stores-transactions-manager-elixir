@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres
+    networks:
+      - database
+    restart: on-failure
+    ports:
+      - 5435:5432
+    volumes:
+      - ./database/data/prod:/var/lib/postgresql/data
+    container_name: db
+    environment:
+      - POSTGRES_PASSWORD=postgres
+
+  server:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    networks:
+      - webapp
+      - database
+    ports:
+      - 4000:4000
+    depends_on:
+      - db
+    restart: always
+    container_name: server
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+    environment:
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: backend_dev
+      PGHOST: db
+      PGPORT: 5432
+    command: bash -c "chmod +x ./entrypoint.sh && ./entrypoint.sh"
+
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend:/app
+    networks:
+      - webapp
+    ports:
+      - 3000:3000
+    stdin_open: true
+    restart: always
+    container_name: web
+    depends_on:
+      - server
+
+networks:
+  webapp:
+    driver: bridge
+  database:
+    driver: bridge
