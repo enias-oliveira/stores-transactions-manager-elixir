@@ -18,4 +18,38 @@ defmodule Backend.TransactionsFixtures do
 
     transaction_types
   end
+
+  @doc """
+  Generate a transaction.
+  """
+  def transaction_fixture(attrs \\ %{}) do
+    {:ok, transaction} =
+      attrs
+      |> Enum.into(%{
+        CPF: "some CPF",
+        card: "some card",
+        date: "some date",
+        value: 120.5
+      })
+      |> Backend.Transactions.create_transaction()
+
+    transaction
+  end
+
+  @doc """
+  Generate a transaction.
+  """
+  def transaction_fixture(attrs \\ %{}) do
+    {:ok, transaction} =
+      attrs
+      |> Enum.into(%{
+        card: "some card",
+        cpf: "some cpf",
+        date: "some date",
+        value: 120.5
+      })
+      |> Backend.Transactions.create_transaction()
+
+    transaction
+  end
 end

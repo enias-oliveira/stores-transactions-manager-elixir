@@ -12,6 +12,9 @@ defmodule BackendWeb.Router do
 
     scope "/transactions" do
       resources "/types", TransactionTypesController, except: [:new, :edit]
+
+      resources "/", TransactionController, except: [:new, :edit]
+
     end
   end
 
