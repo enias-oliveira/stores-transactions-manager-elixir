@@ -8,13 +8,16 @@ defmodule BackendWeb.Router do
   scope "/api", BackendWeb do
     pipe_through(:api)
 
-    resources("/stores", StoreController, except: [:new, :edit])
+    scope "/stores" do
+      get "/:storeId/transactions", StoreController, :show_transactions
+
+      resources("/", StoreController, except: [:new, :edit])
+    end
 
     scope "/transactions" do
       resources "/types", TransactionTypesController, except: [:new, :edit]
 
       resources "/", TransactionController, except: [:new, :edit]
-
     end
   end
 

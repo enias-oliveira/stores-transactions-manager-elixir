@@ -10,7 +10,7 @@ defmodule Backend.Transactions.Transaction do
     field :date, :string
     field :value, :float
     field :transactionTypeId, :integer
-    field :storeId, :binary_id
+    belongs_to :store, Backend.Stores.Store, foreign_key: :storeId
 
     timestamps()
   end

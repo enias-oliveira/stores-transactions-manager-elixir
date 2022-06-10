@@ -1,8 +1,11 @@
 defmodule BackendWeb.StoreController do
   use BackendWeb, :controller
+  import Ecto.Query
 
+  alias Backend.Repo
   alias Backend.Stores
   alias Backend.Stores.Store
+  alias Backend.Transactions.Transaction
 
   action_fallback(BackendWeb.FallbackController)
 
@@ -22,7 +25,7 @@ defmodule BackendWeb.StoreController do
   end
 
   def show(conn, %{"id" => id}) do
-    store = Stores.get_store!(id)
+    store = Stores.get_store!(id) |> Repo.preload(:transactions)
     render(conn, "show.json", store: store)
   end
 
@@ -40,5 +43,11 @@ defmodule BackendWeb.StoreController do
     with {:ok, %Store{}} <- Stores.delete_store(store) do
       send_resp(conn, :no_content, "")
     end
+  end
+
+  def show_transactions(conn, %{"storeId" => id}) do
+    store = Stores.get_store!(id) |> Repo.preload(transactions: :store)
+
+    render(conn, "store_transactions.json", store: store)
   end
 end

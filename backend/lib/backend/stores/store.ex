@@ -8,6 +8,7 @@ defmodule Backend.Stores.Store do
     field :name, :string
     field :owner, :string
     field :totalBalance, :float
+    has_many :transactions, Backend.Transactions.Transaction, foreign_key: :storeId
 
     timestamps()
   end

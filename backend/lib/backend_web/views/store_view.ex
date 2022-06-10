@@ -18,4 +18,8 @@ defmodule BackendWeb.StoreView do
       totalBalance: store.totalBalance
     }
   end
+
+  def render("store_transactions.json", %{store: store}) do
+    render_many(store.transactions, BackendWeb.TransactionView, "transaction.json")
+  end
 end

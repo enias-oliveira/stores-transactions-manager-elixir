@@ -1,8 +1,11 @@
 defmodule BackendWeb.TransactionController do
   use BackendWeb, :controller
 
+  alias Backend.Repo
   alias Backend.Transactions
   alias Backend.Transactions.Transaction
+  alias Backend.Stores
+  alias Backend.Stores.Store
 
   action_fallback BackendWeb.FallbackController
 
@@ -12,8 +15,17 @@ defmodule BackendWeb.TransactionController do
   end
 
   def create(conn, %{"transaction" => transaction_params}) do
-    with {:ok, %Transaction{} = transaction} <-
-           Transactions.create_transaction(transaction_params) do
+    # {:ok, %Transaction{} = transaction} <-
+    #        Transactions.create_transaction(transaction_params),
+    with store <- Stores.get_store!(transaction_params["storeId"]),
+         transaction_assoc <-
+           Ecto.build_assoc(store, :transactions, %{
+             date: transaction_params["date"],
+             value: transaction_params["value"],
+             cpf: transaction_params["cpf"],
+             card: transaction_params["card"]
+           }),
+         transaction <- Repo.insert!(transaction_assoc) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.transaction_path(conn, :show, transaction))
@@ -22,7 +34,7 @@ defmodule BackendWeb.TransactionController do
   end
 
   def show(conn, %{"id" => id}) do
-    transaction = Transactions.get_transaction!(id)
+    transaction = Transactions.get_transaction!(id) |> Repo.preload(:store)
     render(conn, "show.json", transaction: transaction)
   end
 

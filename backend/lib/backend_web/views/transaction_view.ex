@@ -16,7 +16,8 @@ defmodule BackendWeb.TransactionView do
       date: transaction.date,
       value: transaction.value,
       cpf: transaction.cpf,
-      card: transaction.card
+      card: transaction.card,
+      storeId: transaction.store.id,
     }
   end
 end
