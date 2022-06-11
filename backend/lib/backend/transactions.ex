@@ -146,9 +146,14 @@ defmodule Backend.Transactions do
 
   """
   def create_transaction(attrs \\ %{}) do
-    %Transaction{}
-    |> Transaction.changeset(attrs)
-    |> Repo.insert()
+    changeset =
+      %Transaction{}
+      |> Transaction.changeset(attrs)
+
+    with {:ok, transaction} <- changeset |> Repo.insert() do
+      transaction
+      |> Repo.preload([:store, :transactionType])
+    end
   end
 
   @doc """

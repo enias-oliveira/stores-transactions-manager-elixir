@@ -15,21 +15,7 @@ defmodule BackendWeb.TransactionController do
   end
 
   def create(conn, %{"transaction" => transaction_params}) do
-    transaction =
-      Stores.get_store!(transaction_params["storeId"])
-      |> Ecto.build_assoc(:transactions, %{
-        date: transaction_params["date"],
-        value: transaction_params["value"],
-        cpf: transaction_params["cpf"],
-        card: transaction_params["card"]
-      })
-      |> Ecto.Changeset.change()
-      |> Ecto.Changeset.put_assoc(
-        :transactionType,
-        Transactions.get_transaction_types!(transaction_params["transactionTypeId"])
-      )
-      |> Repo.insert!()
-      |> Repo.preload([:store, :transactionType])
+    transaction = Transactions.create_transaction(transaction_params)
 
     conn
     |> put_status(:created)
