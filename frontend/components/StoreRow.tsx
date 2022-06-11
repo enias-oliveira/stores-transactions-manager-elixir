@@ -46,7 +46,7 @@ const StoreRow = ({ store, transactionsTypes }: StoreRowPropTypes) => {
             flex: 1,
         },
         {
-            field: "CPF",
+            field: "cpf",
             flex: 1,
         },
         {

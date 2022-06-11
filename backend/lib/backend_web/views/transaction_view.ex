@@ -18,6 +18,7 @@ defmodule BackendWeb.TransactionView do
       cpf: transaction.cpf,
       card: transaction.card,
       storeId: transaction.store.id,
+      transactionTypeId: transaction.transactionType.id
     }
   end
 end

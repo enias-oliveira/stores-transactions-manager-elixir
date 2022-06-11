@@ -2,6 +2,9 @@ defmodule Backend.Transactions.Transaction do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Backend.Stores.Store
+  alias Backend.Transactions.TransactionTypes
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "transactions" do
@@ -9,8 +12,9 @@ defmodule Backend.Transactions.Transaction do
     field :cpf, :string
     field :date, :string
     field :value, :float
-    field :transactionTypeId, :integer
-    belongs_to :store, Backend.Stores.Store, foreign_key: :storeId
+
+    belongs_to :store, Store, foreign_key: :storeId
+    belongs_to :transactionType, TransactionTypes, foreign_key: :transactionTypeId, type: :integer
 
     timestamps()
   end

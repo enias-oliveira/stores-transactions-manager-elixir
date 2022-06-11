@@ -10,27 +10,31 @@ defmodule BackendWeb.TransactionController do
   action_fallback BackendWeb.FallbackController
 
   def index(conn, _params) do
-    transactions = Transactions.list_transactions()
+    transactions = Transactions.list_transactions() |> Repo.preload([:store, :transactionType])
     render(conn, "index.json", transactions: transactions)
   end
 
   def create(conn, %{"transaction" => transaction_params}) do
-    # {:ok, %Transaction{} = transaction} <-
-    #        Transactions.create_transaction(transaction_params),
-    with store <- Stores.get_store!(transaction_params["storeId"]),
-         transaction_assoc <-
-           Ecto.build_assoc(store, :transactions, %{
-             date: transaction_params["date"],
-             value: transaction_params["value"],
-             cpf: transaction_params["cpf"],
-             card: transaction_params["card"]
-           }),
-         transaction <- Repo.insert!(transaction_assoc) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.transaction_path(conn, :show, transaction))
-      |> render("show.json", transaction: transaction)
-    end
+    transaction =
+      Stores.get_store!(transaction_params["storeId"])
+      |> Ecto.build_assoc(:transactions, %{
+        date: transaction_params["date"],
+        value: transaction_params["value"],
+        cpf: transaction_params["cpf"],
+        card: transaction_params["card"]
+      })
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(
+        :transactionType,
+        Transactions.get_transaction_types!(transaction_params["transactionTypeId"])
+      )
+      |> Repo.insert!()
+      |> Repo.preload([:store, :transactionType])
+
+    conn
+    |> put_status(:created)
+    |> put_resp_header("location", Routes.transaction_path(conn, :show, transaction))
+    |> render("show.json", transaction: transaction)
   end
 
   def show(conn, %{"id" => id}) do
