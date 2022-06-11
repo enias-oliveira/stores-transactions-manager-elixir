@@ -5,7 +5,7 @@ defmodule Backend.Repo.Migrations.CreateTransactions do
     create table(:transactions, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :date, :string
-      add :value, :float
+      add :value, :integer
       add :cpf, :string
       add :card, :string
       add :transactionTypeId, references(:transaction_types, on_delete: :nothing, type: :integer)

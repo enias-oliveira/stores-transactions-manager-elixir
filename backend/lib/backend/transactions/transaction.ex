@@ -14,7 +14,7 @@ defmodule Backend.Transactions.Transaction do
     field :card, :string
     field :cpf, :string
     field :date, :string
-    field :value, :float
+    field :value, :integer
 
     belongs_to :store, Store, foreign_key: :storeId
     belongs_to :transactionType, TransactionTypes, foreign_key: :transactionTypeId, type: :integer
@@ -24,11 +24,17 @@ defmodule Backend.Transactions.Transaction do
 
   @doc false
   def changeset(transaction, attrs) do
+    attrs = parse_attrs(attrs)
+
     transaction
     |> cast(attrs, [:date, :value, :cpf, :card])
     |> add_transactions(attrs)
     |> add_transaction_type(attrs)
     |> validate_required([:date, :value, :cpf, :card])
+  end
+
+  defp parse_attrs(attrs) do
+    %{attrs | "value" => trunc(attrs["value"] * 100)}
   end
 
   defp add_transactions(changeset, attrs) do
