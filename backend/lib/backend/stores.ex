@@ -35,7 +35,11 @@ defmodule Backend.Stores do
       ** (Ecto.NoResultsError)
 
   """
-  def get_store!(id), do: Repo.get!(Store, id) |> put_total_balance()
+  def get_store!(id),
+    do:
+      Repo.get!(Store, id)
+      |> Repo.preload(transactions: [:store, :transactionType])
+      |> put_total_balance()
 
   @doc """
   Creates a store.

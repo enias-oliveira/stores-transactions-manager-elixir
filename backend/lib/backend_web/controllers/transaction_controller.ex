@@ -10,7 +10,7 @@ defmodule BackendWeb.TransactionController do
   action_fallback BackendWeb.FallbackController
 
   def index(conn, _params) do
-    transactions = Transactions.list_transactions() |> Repo.preload([:store, :transactionType])
+    transactions = Transactions.list_transactions()
     render(conn, "index.json", transactions: transactions)
   end
 
@@ -24,7 +24,7 @@ defmodule BackendWeb.TransactionController do
   end
 
   def show(conn, %{"id" => id}) do
-    transaction = Transactions.get_transaction!(id) |> Repo.preload(:store)
+    transaction = Transactions.get_transaction!(id)
     render(conn, "show.json", transaction: transaction)
   end
 

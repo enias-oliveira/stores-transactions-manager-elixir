@@ -25,7 +25,7 @@ defmodule BackendWeb.StoreController do
   end
 
   def show(conn, %{"id" => id}) do
-    store = Stores.get_store!(id) |> Repo.preload(:transactions)
+    store = Stores.get_store!(id)
     render(conn, "show.json", store: store)
   end
 
@@ -46,7 +46,7 @@ defmodule BackendWeb.StoreController do
   end
 
   def show_transactions(conn, %{"storeId" => id}) do
-    store = Stores.get_store!(id) |> Repo.preload(transactions: [:store, :transactionType])
+    store = Stores.get_store!(id)
 
     render(conn, "store_transactions.json", store: store)
   end

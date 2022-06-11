@@ -114,7 +114,7 @@ defmodule Backend.Transactions do
 
   """
   def list_transactions do
-    Repo.all(Transaction)
+    Repo.all(Transaction) |> Repo.preload([:store, :transactionType])
   end
 
   @doc """
@@ -131,7 +131,7 @@ defmodule Backend.Transactions do
       ** (Ecto.NoResultsError)
 
   """
-  def get_transaction!(id), do: Repo.get!(Transaction, id)
+  def get_transaction!(id), do: Repo.get!(Transaction, id) |> Repo.preload(:store)
 
   @doc """
   Creates a transaction.
