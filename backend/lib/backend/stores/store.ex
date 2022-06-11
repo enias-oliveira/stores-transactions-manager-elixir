@@ -7,7 +7,7 @@ defmodule Backend.Stores.Store do
   schema "stores" do
     field :name, :string
     field :owner, :string
-    field :totalBalance, :float
+    field :totalBalance, :float, virtual: true
 
     has_many :transactions, Backend.Transactions.Transaction, foreign_key: :storeId
 

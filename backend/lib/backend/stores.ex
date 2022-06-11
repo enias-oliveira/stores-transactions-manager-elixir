@@ -18,7 +18,7 @@ defmodule Backend.Stores do
 
   """
   def list_stores do
-    Repo.all(Store)
+    Repo.all(Store) |> Enum.map(&put_total_balance/1)
   end
 
   @doc """
@@ -35,7 +35,7 @@ defmodule Backend.Stores do
       ** (Ecto.NoResultsError)
 
   """
-  def get_store!(id), do: Repo.get!(Store, id)
+  def get_store!(id), do: Repo.get!(Store, id) |> put_total_balance()
 
   @doc """
   Creates a store.
@@ -100,5 +100,14 @@ defmodule Backend.Stores do
   """
   def change_store(%Store{} = store, attrs \\ %{}) do
     Store.changeset(store, attrs)
+  end
+
+  defp put_total_balance(%Store{} = store) do
+    transactions = Backend.Repo.preload(store, :transactions) |> Map.get(:transactions, [])
+
+    totalBalance =
+      Enum.reduce(transactions, 0.0, fn transaction, acc -> transaction.value + acc end)
+
+    Map.put(store, :totalBalance, totalBalance)
   end
 end
