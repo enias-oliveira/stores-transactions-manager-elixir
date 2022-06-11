@@ -8,6 +8,9 @@ defmodule Backend.Transactions do
 
   alias Backend.Transactions.TransactionTypes
 
+  alias Backend.Stores
+  alias Backend.Transactions
+
   @doc """
   Returns the list of transaction_types.
 
@@ -149,6 +152,8 @@ defmodule Backend.Transactions do
     changeset =
       %Transaction{}
       |> Transaction.changeset(attrs)
+      |> add_store(attrs)
+      |> add_transaction_type(attrs)
 
     with {:ok, transaction} <- changeset |> Repo.insert() do
       transaction
@@ -201,5 +206,18 @@ defmodule Backend.Transactions do
   """
   def change_transaction(%Transaction{} = transaction, attrs \\ %{}) do
     Transaction.changeset(transaction, attrs)
+  end
+
+  defp add_store(changeset, attrs) do
+    changeset
+    |> Ecto.Changeset.put_assoc(:store, Stores.get_store!(attrs["storeId"]))
+  end
+
+  defp add_transaction_type(changeset, attrs) do
+    changeset
+    |> Ecto.Changeset.put_assoc(
+      :transactionType,
+      Transactions.get_transaction_types!(attrs["transactionTypeId"])
+    )
   end
 end

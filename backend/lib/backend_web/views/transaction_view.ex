@@ -14,7 +14,7 @@ defmodule BackendWeb.TransactionView do
     %{
       id: transaction.id,
       date: transaction.date,
-      value: transaction.value,
+      value: transaction.value / 100,
       cpf: transaction.cpf,
       card: transaction.card,
       storeId: transaction.store.id,

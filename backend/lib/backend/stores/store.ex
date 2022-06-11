@@ -19,5 +19,6 @@ defmodule Backend.Stores.Store do
     store
     |> cast(attrs, [:name, :owner, :totalBalance])
     |> validate_required([:name, :owner, :totalBalance])
+    |> unique_constraint(:name)
   end
 end

@@ -9,5 +9,7 @@ defmodule Backend.Repo.Migrations.CreateStores do
 
       timestamps()
     end
+
+    create unique_index(:stores, [:name])
   end
 end

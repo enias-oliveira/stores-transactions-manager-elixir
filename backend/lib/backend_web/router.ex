@@ -17,6 +17,8 @@ defmodule BackendWeb.Router do
     scope "/transactions" do
       resources "/types", TransactionTypesController, except: [:new, :edit]
 
+      post "/upload", TransactionController, :create_from_upload
+
       resources "/", TransactionController, except: [:new, :edit]
     end
   end

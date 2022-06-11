@@ -110,8 +110,8 @@ defmodule Backend.Stores do
     transactions = Backend.Repo.preload(store, :transactions) |> Map.get(:transactions, [])
 
     totalBalance =
-      Enum.reduce(transactions, 0.0, fn transaction, acc -> transaction.value + acc end)
+      Enum.reduce(transactions, 0, fn transaction, acc -> transaction.value + acc end)
 
-    Map.put(store, :totalBalance, totalBalance)
+    Map.put(store, :totalBalance, totalBalance / 100)
   end
 end
