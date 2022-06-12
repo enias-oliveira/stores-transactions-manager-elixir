@@ -21,7 +21,7 @@ defmodule Backend.Transactions.FileProcessor do
 
     store = get_or_create_store(%Store{name: store_name, owner: store_owner})
 
-    %{insert_at: insert_at, updated_at: updated_at} = timestamps()
+    %{inserted_at: inserted_at, updated_at: updated_at} = timestamps()
 
     %{
       date: date,
@@ -30,7 +30,7 @@ defmodule Backend.Transactions.FileProcessor do
       card: card,
       storeId: store.id,
       transactionTypeId: transaction_type_id,
-      insert_at: insert_at,
+      inserted_at: inserted_at,
       updated_at: updated_at
     }
   end
@@ -53,7 +53,7 @@ defmodule Backend.Transactions.FileProcessor do
 
   defp timestamps() do
     %{
-      insert_atl: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second),
+      inserted_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second),
       updated_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     }
   end
