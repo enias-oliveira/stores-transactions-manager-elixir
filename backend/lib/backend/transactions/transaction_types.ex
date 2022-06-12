@@ -1,7 +1,6 @@
 defmodule Backend.Transactions.TransactionTypes do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Backend.Transactions.Transaction
 
   schema "transaction_types" do
     field :description, Ecto.Enum,

@@ -2,10 +2,8 @@ defmodule Backend.Transactions.Transaction do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Backend.Stores
   alias Backend.Stores.Store
 
-  alias Backend.Transactions
   alias Backend.Transactions.TransactionTypes
 
   @primary_key {:id, :binary_id, autogenerate: true}

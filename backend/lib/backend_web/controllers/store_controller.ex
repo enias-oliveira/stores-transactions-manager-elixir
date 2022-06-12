@@ -1,11 +1,8 @@
 defmodule BackendWeb.StoreController do
   use BackendWeb, :controller
-  import Ecto.Query
 
-  alias Backend.Repo
   alias Backend.Stores
   alias Backend.Stores.Store
-  alias Backend.Transactions.Transaction
 
   action_fallback(BackendWeb.FallbackController)
 

@@ -1,11 +1,8 @@
 defmodule BackendWeb.TransactionController do
   use BackendWeb, :controller
 
-  alias Backend.Repo
   alias Backend.Transactions
   alias Backend.Transactions.Transaction
-  alias Backend.Stores
-  alias Backend.Stores.Store
 
   action_fallback BackendWeb.FallbackController
 

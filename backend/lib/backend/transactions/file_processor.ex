@@ -1,4 +1,5 @@
-defmodule Transactions.FileProcessor do
+defmodule Backend.Transactions.FileProcessor do
+  alias Backend.Repo
   alias Backend.Stores.Store
 
   def normalize(file) do

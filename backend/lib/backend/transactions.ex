@@ -6,10 +6,8 @@ defmodule Backend.Transactions do
   import Ecto.Query, warn: false
   alias Backend.Repo
 
-  alias Backend.Transactions.TransactionTypes
-  alias Backend.Stores.Store
-
   alias Backend.Stores
+  alias Backend.Transactions.TransactionTypes
   alias Backend.Transactions
 
   @doc """
@@ -225,7 +223,7 @@ defmodule Backend.Transactions do
   def create_transactions_from_file(file) do
     normalized_transactions = Transactions.FileProcessor.normalize(file)
 
-    {count, transactions} = Repo.insert_all(Transaction, normalized_transactions, returning: true)
+    {_count, transactions} = Repo.insert_all(Transaction, normalized_transactions, returning: true)
 
     transactions |> Repo.preload([:store, :transactionType])
   end
