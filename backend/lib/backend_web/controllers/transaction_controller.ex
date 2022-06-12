@@ -48,47 +48,8 @@ defmodule BackendWeb.TransactionController do
   end
 
   def create_from_upload(conn, %{"file" => file}) do
-    rawTransactions = File.read!(file.path) |> String.split("\n", trim: true)
+    transactions = Transactions.create_transactions_from_file(file)
 
-    transactions_changesets =
-      Enum.map(rawTransactions, fn
-        rt ->
-          type = String.at(rt, 0) |> String.to_integer()
-
-          datetime =
-            (String.slice(rt, 1..8) <> String.slice(rt, 42..47))
-            |> Timex.parse!("%Y%m%d%H%M%S", :strftime)
-            |> Timex.format!("{ISO:Extended:Z}")
-
-          value = String.slice(rt, 9..18) |> String.to_integer()
-          cpf = String.slice(rt, 19..29)
-          card = String.slice(rt, 30..41)
-          store_owner = String.slice(rt, 48..61) |> String.trim()
-          store_name = String.slice(rt, 62..80) |> String.trim()
-
-          Repo.insert!(%Store{name: store_name, owner: store_owner},
-            on_conflict: :nothing,
-            returning: true
-          )
-
-          store = Repo.get_by!(Store, name: store_name)
-
-          %{
-            date: datetime,
-            value: value,
-            cpf: cpf,
-            card: card,
-            storeId: store.id,
-            transactionTypeId: type,
-            inserted_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second),
-            updated_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
-          }
-      end)
-
-    {count, transactions} = Repo.insert_all(Transaction, transactions_changesets, returning: true)
-
-    render(conn, "index.json",
-      transactions: transactions |> Repo.preload([:store, :transactionType])
-    )
+    render(conn, "index.json", transactions: transactions)
   end
 end

@@ -7,6 +7,7 @@ defmodule Backend.Transactions do
   alias Backend.Repo
 
   alias Backend.Transactions.TransactionTypes
+  alias Backend.Stores.Store
 
   alias Backend.Stores
   alias Backend.Transactions
@@ -219,5 +220,13 @@ defmodule Backend.Transactions do
       :transactionType,
       Transactions.get_transaction_types!(attrs["transactionTypeId"])
     )
+  end
+
+  def create_transactions_from_file(file) do
+    normalized_transactions = Transactions.FileProcessor.normalize(file)
+
+    {count, transactions} = Repo.insert_all(Transaction, normalized_transactions, returning: true)
+
+    transactions |> Repo.preload([:store, :transactionType])
   end
 end
