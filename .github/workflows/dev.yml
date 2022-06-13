@@ -13,6 +13,6 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "strs-transactions-manager-dev"
+          heroku_app_name: "strs-trnsctns-mngr-elixir-dev"
           heroku_email: "eniasoliveira27@gmail.com"
           stack: "container"

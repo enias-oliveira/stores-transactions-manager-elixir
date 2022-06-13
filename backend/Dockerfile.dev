@@ -1,14 +1,17 @@
-FROM node:16.14.2-alpine
+FROM bitwalker/alpine-elixir-phoenix:latest
+
+RUN apk add postgresql-client && \
+    apk add inotify-tools && \
+    apk add bash
 
 WORKDIR /app
 
-COPY . /app
+COPY entrypoint.sh mix.exs mix.lock ./
 
-RUN chmod +w /app/wait-for-it.sh
+RUN chmod +x /app/entrypoint.sh
 
-RUN npm install --silent
-RUN npx prisma generate
+RUN mix deps.get
 
-RUN apk add --no-cache bash
+EXPOSE 4000
 
-EXPOSE 5500
+CMD ./app/entrypoint.sh
