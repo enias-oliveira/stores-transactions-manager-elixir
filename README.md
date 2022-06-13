@@ -3,7 +3,7 @@
 
 A simple software for managing transactions by uploading and parsing a CNAB file.
 
-The Backend is built with NestJs, using Prisma ORM/(Postgres) as Database and the Frontend with Next.NestJs using MUI for UI components.
+The Backend is built with Phoenixr, using Postgres for Database and the Frontend with Next.NestJs using MUI for UI components.
 
 Ths repository has a minimal CI/CD setup via Github Actions, that automatically builds the application and deploys on Heroku.
 
@@ -17,18 +17,18 @@ Ths repository has a minimal CI/CD setup via Github Actions, that automatically 
 
 Heroku will put the server on sleep after some time, so your first interaction with the demo will be a slower than normally
 
-[Development](https://strs-transactions-manager-dev.herokuapp.com)
-[Production](https://strs-transactions-manager.herokuapp.com)
+[Development](https://strs-trnsctns-mngr-elixir-dev.herokuapp.com/)
+
 ## Run Development Env
 
 Clone the project
 
 ```bash
-  git clone https://github.com/enias-oliveira/stores-transactions-manager
+  git clone https://github.com/enias-oliveira/stores-transactions-manager-elixir
 ```
 
 ```bash
-  cd stores-transactions-manager
+  cd stores-transactions-manager-elixir
 ```
 
 ### Using Docker Compose
@@ -45,7 +45,7 @@ Server on localhost:5500
 Go to the backend directory
 
 ```bash
-  cd my-project
+  cd https://strs-trnsctns-mngr-elixir-dev.herokuapp.com/
 ```
 
 Go to the backend directory
@@ -57,13 +57,13 @@ Go to the backend directory
 Install dependencies
 
 ```bash
-  npm install
+   mix local.hex --force && mix ecto.migrate && mix run priv/repo/seeds.exs
 ```
 
 Start the server
 
 ```bash
-  npm run start
+  mix phx.serve
 ```
 
 Go to the frontend directory
@@ -85,11 +85,12 @@ Start the server
 ```
 
 
-Web will be available on localhost:3000
+Web will be available on localhost:4000
 Server on localhost:5501
 
 
 * There is support for Nix-shell, try it out, its awesome!
+
 ## API Reference
 
 * The /api/ prefix is not required if fetching directly from the server, only if fetching via NextJs Frontend that acts as a proxy
@@ -122,7 +123,7 @@ Server on localhost:5501
 #### Get All Transactions Types
 
 ```http
-  GET /api/transactions
+  GET /api/transactions/types
 ```
 
 
