@@ -34,11 +34,11 @@ Clone the project
 ### Using Docker Compose
 
 ```bash
-  docker-compose -f docker-compose.dev.yml up
+  docker-compose -f docker-compose.dev.yml up --build
 ```
 
 Web will be available on localhost:3000
-Server on localhost:5500
+Server on localhost:4000
 
 ### Run Locally
 
