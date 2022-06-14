@@ -34,13 +34,23 @@ Clone the project
 ### Using Docker Compose
 
 ```bash
-  docker-compose -f docker-compose.dev.yml up
+  docker-compose up
 ```
 
 Web will be available on localhost:3000
-Server on localhost:5500
+Server on localhost:4000
 
 ### Run Locally
+
+To run localy, the backend expects a Postgres running and to pass its connection details via env variables, which is taken care when using docker-compose
+
+``` bash
+PGUSER=postgres
+PGPASSWORD=postgres
+PGDATABASE=backend
+PGHOST=db
+PGPORT=5432
+```
 
 Go to the backend directory
 
