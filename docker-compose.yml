@@ -8,12 +8,12 @@ services:
       - database
     restart: on-failure
     ports:
-      - 5434:5432
+      - 5435:5432
     volumes:
-      - ./database/data/prod:/var/lib/postgresql/data
+      - backend_db:/var/lib/postgresql/data
     container_name: db
-    env_file:
-     - ./backend/.env.docker
+    environment:
+      - POSTGRES_PASSWORD=postgres
 
   server:
     build:
@@ -24,21 +24,31 @@ services:
       - database
     ports:
       - 4000:4000
-    env_file:
-        - ./backend/.env.docker
     depends_on:
       - db
     restart: always
     container_name: server
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+    environment:
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: backend
+      PGHOST: db
+      PGPORT: 5432
+    command: bash -c "chmod +x ./entrypoint.sh && ./entrypoint.sh"
 
   web:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
     networks:
       - webapp
     ports:
-      - 80:3000
+      - 3000:3000
     stdin_open: true
     restart: always
     container_name: web
@@ -50,3 +60,7 @@ networks:
     driver: bridge
   database:
     driver: bridge
+
+volumes:
+  backend_db:
+    name: backend_db
