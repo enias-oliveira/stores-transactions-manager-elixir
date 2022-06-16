@@ -43,12 +43,13 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    volumes:
-      - ./frontend:/app
+    environment:
+      - BACKEND_SERVICE_URL=http://server:4000
     networks:
       - webapp
     ports:
       - 3000:3000
+    command: npm run dev
     stdin_open: true
     restart: always
     container_name: web
